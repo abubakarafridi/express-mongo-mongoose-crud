@@ -1,34 +1,42 @@
 import express from "express"
 import cors from "cors"
+import mongoose from "mongoose"
 
 const app = express();
-const PORT = 3000;
-
 app.use(cors())
 app.use(express.json())
 
-function errorHandler(err, res, req, nex) {
-    res.status(err.status || 500).json({
-        message: err.message || "something went wrong",
-        error: true,
-    });
-}
+const mongoUri = "mongodb://localhost:27017/user_management";
 
-app.get("/", (req, res) => {
-    res.send("hii")
-})
-app.push("/", (req, res) => {
-    res.send("hii")
-})
-app.put("/", (req, res) => {
-    res.send("hii")
-})
-app.delete("/", (req, res) => {
-    res.send("hii")
+mongoose.connect(mongoUri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+}).then (() => {
+    console.log("Connected to MongoDB");
+}).catch(err => {
+    console.error("error connecting to MongoDB", err.message)
 })
 
-app.use(errorHandler)
+const userSchema = new mongoose.Schema({
+    name: String,
+    email: String,
+})
 
-app.listen(PORT, () => {
+const User = mongoose.model("User", userSchema);
+
+// app.get("/", (req, res) => {
+//     res.send("hii")
+// })
+// app.push("/", (req, res) => {
+//     res.send("hii")
+// })
+// app.put("/", (req, res) => {
+//     res.send("hii")
+// })
+// app.delete("/", (req, res) => {
+//     res.send("hii")
+// })
+
+app.listen(3000, () => {
     console.log("The port is listening on port 3000");
 })
