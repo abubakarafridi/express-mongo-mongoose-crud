@@ -43,6 +43,7 @@ app.post("/api/users", async (req, res) => {
         res.status(500).json({message: "Error creating user", error: error.message})
     }
 })
+// Just an infromation if you want to access the json data on vercal using api/users it will timeout because it has not data to be shown
 
 app.put("/api/users/:id", async(req, res) => {
     const { id } = req.params;
