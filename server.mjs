@@ -24,9 +24,15 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model("User", userSchema);
 
-// app.get("/", (req, res) => {
-//     res.send("hii")
-// })
+app.get("/api/users", async (req, res) => {
+    try {
+        const users = await User.find();
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(500).json({message : "Error fetching users", error: error.message})
+    }
+})
+
 // app.push("/", (req, res) => {
 //     res.send("hii")
 // })
