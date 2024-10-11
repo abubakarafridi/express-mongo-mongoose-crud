@@ -44,9 +44,25 @@ app.post("/api/users", async (req, res) => {
     }
 })
 
-// app.put("/", (req, res) => {
-//     res.send("hii")
-// })
+app.put("/api/users/:id", async(req, res) => {
+    const { id } = req.params;
+    const { name, email } = req.body;
+
+    try {
+        const updatedUser = await User.findByIdAndUpdate(
+            id,
+            {name, email},
+            {new: true}
+        );
+        if (!updatedUser) {
+            return res.status(404).json({message: "user not found"})
+        }
+        res.status(200).json(updatedUser);
+    } catch (error) {
+        res.status(500).json({message: "Error updating user", error: error.message})
+    }
+})
+
 // app.delete("/", (req, res) => {
 //     res.send("hii")
 // })
