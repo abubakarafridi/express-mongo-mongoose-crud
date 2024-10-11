@@ -63,9 +63,19 @@ app.put("/api/users/:id", async(req, res) => {
     }
 })
 
-// app.delete("/", (req, res) => {
-//     res.send("hii")
-// })
+app.delete("/api/users/:id", async(req, res) => {
+    const { id } = req.params;
+
+    try {
+        const deletedUser = await User.findByIdAndDelete(id);
+        if (!deletedUser) {
+            return res.status(404).json({message: "user not found"})
+        }
+        res.status(200).json({message: "User deleted successfully"});
+    } catch (error) {
+        res.status(500).json({message: "Error deleting user", error: error.message})
+    }
+})
 
 app.listen(3000, () => {
     console.log("The port is listening on port 3000");
